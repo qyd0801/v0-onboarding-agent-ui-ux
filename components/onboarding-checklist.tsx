@@ -15,9 +15,11 @@ export function OnboardingChecklist() {
   const [items, setItems] = useState<ChecklistItem[]>([
     { id: "1", title: "Complete Profile Setup", description: "Update your personal information", completed: true },
     { id: "2", title: "Review Company Handbook", description: "Read and acknowledge our policies", completed: true },
-    { id: "3", title: "Set Up Work Equipment", description: "Configure your laptop and tools", completed: false },
-    { id: "4", title: "Attend Team Meeting", description: "Join your team's introduction session", completed: false },
-    { id: "5", title: "Complete Training Modules", description: "Finish all mandatory training", completed: false },
+    { id: "3", title: "Join Slack Workspace", description: "Connect with your team on Slack", completed: false },
+    { id: "4", title: "Access Aurora Design System", description: "Review design tokens and components", completed: false },
+    { id: "5", title: "Set Up Work Equipment", description: "Configure your laptop and tools", completed: false },
+    { id: "6", title: "Attend Team Meeting", description: "Join your team's introduction session", completed: false },
+    { id: "7", title: "Complete Training Modules", description: "Finish all mandatory training", completed: false },
   ])
 
   const handleToggle = (id: string) => {

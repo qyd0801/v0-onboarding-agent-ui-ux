@@ -1,0 +1,73 @@
+"use client"
+
+import { useState } from "react"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { MessageCircle, Video } from "lucide-react"
+import { TextChatbot } from "./text-chatbot"
+import { AnamAvatarChatbot } from "./anam-avatar-chatbot"
+
+interface DualChatbotInterfaceProps {
+  employeeName?: string
+  employeeEmail?: string
+  managerEmail?: string
+}
+
+export function DualChatbotInterface({ 
+  employeeName, 
+  employeeEmail,
+  managerEmail 
+}: DualChatbotInterfaceProps) {
+  const [mode, setMode] = useState<'text' | 'avatar'>('text')
+
+  return (
+    <div className="space-y-4">
+      {/* Mode Selector */}
+      <Card className="p-3 border border-border">
+        <div className="flex items-center justify-center gap-3">
+          <Button
+            variant={mode === 'text' ? 'default' : 'outline'}
+            onClick={() => setMode('text')}
+            className={`flex items-center gap-2 ${
+              mode === 'text' 
+                ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+                : 'border-border text-foreground hover:bg-muted'
+            }`}
+          >
+            <MessageCircle className="w-4 h-4" />
+            Chatbot
+          </Button>
+          
+          <Button
+            variant={mode === 'avatar' ? 'default' : 'outline'}
+            onClick={() => setMode('avatar')}
+            className={`flex items-center gap-2 ${
+              mode === 'avatar' 
+                ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+                : 'border-border text-foreground hover:bg-muted'
+            }`}
+          >
+            <Video className="w-4 h-4" />
+            Avatar
+          </Button>
+        </div>
+      </Card>
+
+      {/* Chatbot Display */}
+      {mode === 'text' ? (
+        <TextChatbot 
+          employeeName={employeeName}
+          employeeEmail={employeeEmail}
+          managerEmail={managerEmail}
+        />
+      ) : (
+        <AnamAvatarChatbot 
+          employeeName={employeeName}
+          employeeEmail={employeeEmail}
+          managerEmail={managerEmail}
+        />
+      )}
+    </div>
+  )
+}
+

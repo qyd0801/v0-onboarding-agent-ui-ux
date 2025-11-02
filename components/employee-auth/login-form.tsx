@@ -20,7 +20,7 @@ export function LoginForm({ onLogin, onAdminAccess }: LoginFormProps) {
   const [isAdmin, setIsAdmin] = useState(false)
   const [error, setError] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
 
@@ -34,17 +34,27 @@ export function LoginForm({ onLogin, onAdminAccess }: LoginFormProps) {
       return
     }
 
-    // Mock authentication
-    const userData = {
-      id: "1",
-      email,
-      name: email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1),
-      project: "Frontend",
-      role: "Senior Developer",
-      joinedDate: new Date().toLocaleDateString(),
-    }
+    try {
+      // Call authentication API
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
 
-    onLogin(userData)
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || 'Invalid email or password')
+        return
+      }
+
+      // Login successful, pass user data to parent
+      onLogin(data.user)
+    } catch (error) {
+      console.error('Login error:', error)
+      setError('Failed to login. Please try again.')
+    }
   }
 
   const handleAdminClick = () => {

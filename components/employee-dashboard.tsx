@@ -5,8 +5,9 @@ import { Card } from "@/components/ui/card"
 import { LogOut, User, Briefcase, Building2, Shield, FileText } from "lucide-react"
 import { EmployeeProfile } from "./employee-profile"
 import { OnboardingChecklist } from "./onboarding-checklist"
-import { OnboardingChatbot } from "./onboarding-chatbot"
+import { DualChatbotInterface } from "./dual-chatbot-interface"
 import { IntegrationsPanel } from "./integrations-panel"
+import { EmailTestPanel } from "./email-test-panel"
 
 interface EmployeeDashboardProps {
   user: {
@@ -16,6 +17,7 @@ interface EmployeeDashboardProps {
     project: string
     role: string
     joinedDate: string
+    manager_email?: string
   }
   onLogout: () => void
   onRoleChange: (role: "admin" | "employee" | null) => void
@@ -100,8 +102,19 @@ export function EmployeeDashboard({ user, onLogout, onRoleChange }: EmployeeDash
             {/* Integrations Panel */}
             <IntegrationsPanel />
 
-            {/* AI Chatbot */}
-            <OnboardingChatbot />
+            {/* AI Chatbot - Dual Interface */}
+            <DualChatbotInterface 
+              employeeName={user.name}
+              employeeEmail={user.email}
+              managerEmail={user.manager_email}
+            />
+
+            {/* Email System Test Panel */}
+            <EmailTestPanel 
+              employeeName={user.name}
+              employeeEmail={user.email}
+              managerEmail={user.manager_email}
+            />
 
             {/* Documents Section */}
             <Card className="p-6 border border-border">
@@ -112,13 +125,19 @@ export function EmployeeDashboard({ user, onLogout, onRoleChange }: EmployeeDash
 
               <div className="space-y-3">
                 {[
-                  { name: "Employee Handbook", date: "2024-01-15" },
-                  { name: "Code of Conduct", date: "2024-01-15" },
-                  { name: "Company Policies", date: "2024-01-15" },
+                  { name: "Employee Handbook", date: "2024-01-15", type: "download" },
+                  { name: "Code of Conduct", date: "2024-01-15", type: "download" },
+                  { name: "Aurora Design System", date: "Updated", type: "link", url: "https://github.com/JieHan-eng/aurora-design-system" },
+                  { name: "Company Policies", date: "2024-01-15", type: "download" },
                 ].map((doc) => (
                   <div
                     key={doc.name}
                     className="flex items-center justify-between p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors cursor-pointer"
+                    onClick={() => {
+                      if (doc.type === "link" && doc.url) {
+                        window.open(doc.url, "_blank")
+                      }
+                    }}
                   >
                     <div className="flex items-center gap-3">
                       <FileText className="w-4 h-4 text-primary" />
@@ -128,7 +147,7 @@ export function EmployeeDashboard({ user, onLogout, onRoleChange }: EmployeeDash
                       </div>
                     </div>
                     <Button size="sm" variant="ghost" className="text-primary hover:bg-primary/10">
-                      Download
+                      {doc.type === "link" ? "View" : "Download"}
                     </Button>
                   </div>
                 ))}

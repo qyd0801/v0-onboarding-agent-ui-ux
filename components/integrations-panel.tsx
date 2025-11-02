@@ -20,12 +20,12 @@ export function IntegrationsPanel() {
     {
       name: "Slack",
       icon: <Slack className="w-5 h-5" />,
-      status: "connected",
+      status: "pending",
       details: [
-        "✓ Added to #frontend channel",
-        "✓ Added to #general channel",
-        "✓ Added to #random channel",
-        "✓ Display name configured",
+        "Join the Raspberry Coffee workspace",
+        "Connect with your team members",
+        "Access important channels",
+        "Get real-time updates",
       ],
     },
     {
@@ -33,13 +33,38 @@ export function IntegrationsPanel() {
       icon: <Github className="w-5 h-5" />,
       status: "connected",
       details: [
-        "✓ Access granted to frontend-app repository",
+        "✓ Access granted to aurora-design-system",
         "✓ Added to Frontend team",
         "✓ SSH key configured",
-        "✓ Invite accepted",
+        "✓ Repository access active",
       ],
     },
   ])
+
+  const handleJoinSlack = () => {
+    // Open Slack invite link in new tab
+    window.open("https://join.slack.com/t/raspberrycoffee/shared_invite/zt-3hiynzzs1-bAQGFz3OE8DSXX8lpKEtBA", "_blank")
+    
+    // Update Slack status to connected after a short delay
+    setTimeout(() => {
+      setIntegrations((prev) =>
+        prev.map((integration) =>
+          integration.name === "Slack"
+            ? {
+                ...integration,
+                status: "connected" as const,
+                details: [
+                  "✓ Joined Raspberry Coffee workspace",
+                  "✓ Added to team channels",
+                  "✓ Display name configured",
+                  "✓ Ready to collaborate",
+                ],
+              }
+            : integration,
+        ),
+      )
+    }, 2000)
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -102,23 +127,33 @@ export function IntegrationsPanel() {
 
             {/* Actions */}
             {integration.status === "connected" && (
-              <div className="mt-4 pt-4 border-t border-border flex gap-2">
-                <Button size="sm" variant="outline" className="border-border flex-1 bg-transparent">
+              <div className="mt-4 pt-4 border-t border-border">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-border w-full bg-transparent"
+                  onClick={() => {
+                    if (integration.name === "Slack") {
+                      window.open("https://raspberrycoffee.slack.com", "_blank")
+                    } else if (integration.name === "GitHub") {
+                      window.open("https://github.com/JieHan-eng/aurora-design-system", "_blank")
+                    }
+                  }}
+                >
                   View in {integration.name}
-                </Button>
-                <Button size="sm" variant="ghost" className="text-destructive hover:bg-destructive/10">
-                  Disconnect
                 </Button>
               </div>
             )}
 
             {integration.status === "pending" && (
               <div className="mt-4 pt-4 border-t border-border flex gap-2">
-                <Button size="sm" variant="outline" className="border-border flex-1 bg-transparent">
-                  Complete Setup
-                </Button>
-                <Button size="sm" variant="ghost" className="text-destructive hover:bg-destructive/10">
-                  Cancel
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-primary text-primary hover:bg-primary/10 flex-1 bg-transparent"
+                  onClick={integration.name === "Slack" ? handleJoinSlack : undefined}
+                >
+                  {integration.name === "Slack" ? "Join Slack Workspace" : "Complete Setup"}
                 </Button>
               </div>
             )}
@@ -131,9 +166,16 @@ export function IntegrationsPanel() {
         <h4 className="font-semibold text-foreground mb-3">Onboarding Status</h4>
         <div className="space-y-2 text-sm">
           <p className="text-muted-foreground">
-            <span className="font-semibold text-accent">2 of 2</span> integrations completed
+            <span className="font-semibold text-accent">
+              {integrations.filter((i) => i.status === "connected").length} of {integrations.length}
+            </span>{" "}
+            integrations completed
           </p>
-          <p className="text-muted-foreground">Your access to all team tools has been configured and activated.</p>
+          <p className="text-muted-foreground">
+            {integrations.every((i) => i.status === "connected")
+              ? "Your access to all team tools has been configured and activated."
+              : "Complete the pending integrations to get full access to team tools."}
+          </p>
           <p className="text-muted-foreground mt-3 text-xs">
             If you experience any issues accessing these services, please contact IT support at it-support@company.com.
           </p>

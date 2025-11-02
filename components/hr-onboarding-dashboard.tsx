@@ -45,7 +45,7 @@ export function HROnboardingDashboard() {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!formData.name || !formData.email || !formData.password || !formData.project || !formData.role) {
@@ -53,20 +53,39 @@ export function HROnboardingDashboard() {
       return
     }
 
-    const newEmployee: Employee = {
-      id: Date.now().toString(),
-      ...formData,
-      addedAt: new Date().toLocaleDateString(),
+    try {
+      // Call API to create employee in Supabase
+      const response = await fetch('/api/employees/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        alert(data.error || 'Failed to create employee')
+        return
+      }
+
+      const newEmployee: Employee = {
+        id: data.employee.id,
+        ...formData,
+        addedAt: new Date().toLocaleDateString(),
+      }
+
+      setEmployees((prev) => [newEmployee, ...prev])
+      setSubmitted(newEmployee)
+      setFormData({ name: "", email: "", password: "", project: "", role: "" })
+
+      setTimeout(() => {
+        setShowForm(true)
+        setSubmitted(null)
+      }, 3000)
+    } catch (error) {
+      console.error('Error creating employee:', error)
+      alert('Failed to create employee. Please try again.')
     }
-
-    setEmployees((prev) => [newEmployee, ...prev])
-    setSubmitted(newEmployee)
-    setFormData({ name: "", email: "", password: "", project: "", role: "" })
-
-    setTimeout(() => {
-      setShowForm(true)
-      setSubmitted(null)
-    }, 3000)
   }
 
   return (

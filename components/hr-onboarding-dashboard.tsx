@@ -105,7 +105,7 @@ export function HROnboardingDashboard() {
         <div className="grid lg:grid-cols-12 gap-6 xl:gap-8">
           {/* Form Section */}
           <div className="lg:col-span-5 xl:col-span-4">
-            <Card className="p-6 lg:p-8 border border-border shadow-lg sticky top-24">
+            <Card className="p-6 lg:p-8 shadow-lg sticky top-24">
               <h2 className="text-2xl font-bold text-foreground mb-6">Add New Employee</h2>
 
               {submitted ? (
@@ -239,7 +239,7 @@ export function HROnboardingDashboard() {
               </div>
 
               {employees.length === 0 ? (
-                <Card className="p-12 lg:p-16 text-center border border-border">
+                <Card className="p-12 lg:p-16 text-center">
                   <div className="max-w-md mx-auto">
                     <div className="mb-4 inline-flex items-center justify-center w-16 h-16 bg-muted rounded-full">
                       <Users className="w-8 h-8 text-muted-foreground" />
@@ -252,7 +252,7 @@ export function HROnboardingDashboard() {
               ) : (
                 <div className="grid gap-4 xl:gap-5">
                   {employees.map((employee) => (
-                    <Card key={employee.id} className="p-6 lg:p-7 border border-border hover:shadow-lg transition-all">
+                    <Card key={employee.id} className="p-6 lg:p-7 hover:shadow-lg transition-all">
                       <div className="flex items-start justify-between mb-5">
                         <div className="flex items-start gap-4 flex-1">
                           <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center flex-shrink-0">

@@ -203,17 +203,17 @@ export function TextChatbot({
   }
 
   return (
-    <Card className="p-6 border border-border flex flex-col h-[500px] lg:h-[600px] xl:h-[700px]">
+    <Card className="p-6 flex flex-col h-[500px] lg:h-[600px] xl:h-[700px]">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-4 pb-4 border-b border-border">
-        <div className="p-2 bg-primary/10 rounded-lg">
-          <MessageCircle className="w-5 h-5 text-primary" />
+        <div className="flex items-center gap-3 mb-4 pb-4 border-b border-border">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <MessageCircle className="w-5 h-5 text-primary" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-bold text-foreground">Virtual Mentor</h3>
+            <p className="text-xs text-muted-foreground">Ask questions or request support</p>
+          </div>
         </div>
-        <div className="flex-1">
-          <h3 className="text-lg font-bold text-foreground">Text Chat Assistant</h3>
-          <p className="text-xs text-muted-foreground">Ask questions or request support</p>
-        </div>
-      </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">

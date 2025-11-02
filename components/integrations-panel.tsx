@@ -69,11 +69,11 @@ export function IntegrationsPanel() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "connected":
-        return "bg-accent/20 text-accent border-accent/30"
+        return "bg-primary/10 text-primary"
       case "pending":
-        return "bg-blue-500/20 text-blue-600 border-blue-500/30"
+        return "bg-primary/5 text-primary"
       case "failed":
-        return "bg-destructive/20 text-destructive border-destructive/30"
+        return "bg-destructive/10 text-destructive"
       default:
         return ""
     }
@@ -98,7 +98,7 @@ export function IntegrationsPanel() {
 
       <div className="grid lg:grid-cols-2 gap-4 xl:gap-6">
         {integrations.map((integration) => (
-          <Card key={integration.name} className="p-6 lg:p-7 border border-border hover:shadow-md transition-shadow">
+          <Card key={integration.name} className="p-6 lg:p-7 hover:shadow-md transition-shadow">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-muted rounded-xl shadow-sm">{integration.icon}</div>
@@ -107,7 +107,10 @@ export function IntegrationsPanel() {
                   <p className="text-xs text-muted-foreground mt-1">Onboarding Integration</p>
                 </div>
               </div>
-              <Badge className={`${getStatusColor(integration.status)} flex items-center gap-1 px-3 py-1.5`}>
+              <Badge
+                variant="outline"
+                className={`${getStatusColor(integration.status)} flex items-center gap-1 px-3 py-1.5 border-transparent hover:bg-transparent`}
+              >
                 {getStatusIcon(integration.status)}
                 {integration.status === "connected" && "Connected"}
                 {integration.status === "pending" && "Pending"}
@@ -119,7 +122,7 @@ export function IntegrationsPanel() {
             <div className="space-y-2.5">
               {integration.details.map((detail, idx) => (
                 <div key={idx} className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                   <span>{detail}</span>
                 </div>
               ))}
@@ -127,11 +130,11 @@ export function IntegrationsPanel() {
 
             {/* Actions */}
             {integration.status === "connected" && (
-              <div className="mt-4 pt-4 border-t border-border">
+              <div className="mt-4 pt-4 relative before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-foreground/10">
                 <Button
                   size="sm"
                   variant="outline"
-                  className="border-border w-full bg-transparent"
+                  className="w-full bg-transparent text-primary border-primary/30 hover:bg-primary/10"
                   onClick={() => {
                     if (integration.name === "Slack") {
                       window.open("https://raspberrycoffee.slack.com", "_blank")
@@ -146,11 +149,11 @@ export function IntegrationsPanel() {
             )}
 
             {integration.status === "pending" && (
-              <div className="mt-4 pt-4 border-t border-border flex gap-2">
+              <div className="mt-4 pt-4 flex gap-2 relative before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-foreground/10">
                 <Button
                   size="sm"
                   variant="outline"
-                  className="border-primary text-primary hover:bg-primary/10 flex-1 bg-transparent"
+                  className="text-primary hover:bg-primary/10 flex-1 bg-transparent border-primary/30"
                   onClick={integration.name === "Slack" ? handleJoinSlack : undefined}
                 >
                   {integration.name === "Slack" ? "Join Slack Workspace" : "Complete Setup"}
@@ -160,34 +163,6 @@ export function IntegrationsPanel() {
           </Card>
         ))}
       </div>
-
-      {/* Integration Status Summary */}
-      <Card className="p-6 lg:p-7 border border-border bg-gradient-to-br from-accent/5 to-accent/10">
-        <h4 className="text-lg font-bold text-foreground mb-4">Onboarding Status</h4>
-        <div className="space-y-3">
-          <div className="flex items-center gap-3 p-4 bg-background/50 rounded-lg">
-            <div className="text-3xl font-bold text-accent">
-              {integrations.filter((i) => i.status === "connected").length}/{integrations.length}
-            </div>
-            <div className="flex-1">
-              <p className="font-semibold text-foreground">Integrations Completed</p>
-              <p className="text-sm text-muted-foreground">
-                {integrations.every((i) => i.status === "connected")
-                  ? "All systems ready!"
-                  : "Almost there!"}
-              </p>
-            </div>
-          </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {integrations.every((i) => i.status === "connected")
-              ? "Your access to all team tools has been configured and activated."
-              : "Complete the pending integrations to get full access to team tools."}
-          </p>
-          <p className="text-xs text-muted-foreground pt-2 border-t border-border/50">
-            💡 Need help? Contact IT support at it-support@company.com
-          </p>
-        </div>
-      </Card>
     </div>
   )
 }

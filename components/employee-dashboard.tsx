@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { LogOut, User, Briefcase, Building2, Shield, FileText } from "lucide-react"
-import { EmployeeProfile } from "./employee-profile"
+import { Briefcase, Building2, FileText } from "lucide-react"
 import { OnboardingChecklist } from "./onboarding-checklist"
-import { DualChatbotInterface } from "./dual-chatbot-interface"
 import { IntegrationsPanel } from "./integrations-panel"
-import { EmailTestPanel } from "./email-test-panel"
+import { TextChatbot } from "./text-chatbot"
+import { AnamAvatarChatbot } from "./anam-avatar-chatbot"
+import { TopNav } from "./top-nav"
 
 interface EmployeeDashboardProps {
   user: {
@@ -20,118 +20,90 @@ interface EmployeeDashboardProps {
     manager_email?: string
   }
   onLogout: () => void
-  onRoleChange: (role: "admin" | "employee" | null) => void
 }
 
-export function EmployeeDashboard({ user, onLogout, onRoleChange }: EmployeeDashboardProps) {
+export function EmployeeDashboard({ user, onLogout }: EmployeeDashboardProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-[1600px] mx-auto px-4 py-4 sm:px-6 lg:px-8 xl:px-12 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-              <User className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-foreground">Employee Portal</h1>
-              <p className="text-sm text-muted-foreground">Welcome back, {user.name}</p>
-            </div>
+      {/* Pill Top Navigation matching Figma */}
+      <TopNav
+        user={user}
+        onLogout={onLogout}
+      />
+
+      {/* Main Content: fixed 1280 width, 20px margins, 10px gaps */}
+      <main className="max-w-[1280px] mx-auto px-[20px] py-6">
+        <div className="grid grid-cols-[490px_1fr] gap-[10px] items-start">
+          {/* Left column: Voice Avatar + Text Chat */}
+          <div className="space-y-[10px]">
+            <AnamAvatarChatbot
+              employeeName={user.name}
+              employeeEmail={user.email}
+              managerEmail={user.manager_email}
+            />
+
+            <TextChatbot
+              employeeName={user.name}
+              employeeEmail={user.email}
+              managerEmail={user.manager_email}
+            />
           </div>
 
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              onClick={() => {
-                onRoleChange("admin")
-              }}
-              className="border-border text-primary hover:bg-primary/5 hidden sm:flex"
-            >
-              <Shield className="w-4 h-4 mr-2" />
-              Admin Panel
-            </Button>
-            <Button
-              onClick={onLogout}
-              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>
+          {/* Right column: all other features as cards */}
+          <div className="space-y-[10px]">
+            <Card className="p-6 gap-0">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-foreground">Current Snapshot</h3>
+                <span className="text-xs font-medium uppercase tracking-wider text-primary/70">Today</span>
+              </div>
 
-      {/* Main Content */}
-      <main className="max-w-[1600px] mx-auto px-4 py-8 sm:px-6 lg:px-8 xl:px-12">
-        <div className="grid lg:grid-cols-12 gap-6 xl:gap-8">
-          {/* Profile Section */}
-          <div className="lg:col-span-4 xl:col-span-3">
-            <EmployeeProfile user={user} />
-          </div>
-
-          {/* Onboarding & Info Section */}
-          <div className="lg:col-span-8 xl:col-span-9 space-y-6">
-            {/* Quick Stats */}
-            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-6">
-              <Card className="p-6 border border-border hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">Current Project</p>
-                    <p className="text-2xl font-bold text-foreground">{user.project}</p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[18px] bg-primary/10 p-4 flex flex-col gap-2">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-xs font-semibold uppercase text-primary/70">Current Project</p>
+                      <p className="text-xl font-bold text-primary">{user.project}</p>
+                    </div>
+                    <Briefcase className="w-8 h-8 text-primary/80" />
                   </div>
-                  <Briefcase className="w-10 h-10 text-primary/30" />
+                  <p className="text-xs text-primary/60">Stay aligned with project milestones.</p>
                 </div>
-              </Card>
 
-              <Card className="p-6 border border-border hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">Role</p>
-                    <p className="text-2xl font-bold text-foreground">{user.role.split(" ")[0]}</p>
+                <div className="rounded-[18px] bg-primary/10 p-4 flex flex-col gap-2">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-xs font-semibold uppercase text-primary/70">Role</p>
+                      <p className="text-xl font-bold text-primary">{user.role.split(" ")[0]}</p>
+                    </div>
+                    <Building2 className="w-8 h-8 text-primary/80" />
                   </div>
-                  <Building2 className="w-10 h-10 text-secondary/30" />
+                  <p className="text-xs text-primary/60">Access tailored resources for your role.</p>
                 </div>
-              </Card>
+              </div>
 
-              <Card className="p-6 border border-border hover:shadow-md transition-shadow sm:col-span-2 xl:col-span-1">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">Onboarding</p>
-                    <p className="text-2xl font-bold text-accent">29% Complete</p>
-                  </div>
-                  <FileText className="w-10 h-10 text-accent/30" />
+              <div className="mt-5 rounded-[18px] bg-muted/60 p-4">
+                <div className="flex items-center justify-between text-sm font-semibold text-foreground">
+                  <span>Onboarding Progress</span>
+                  <span className="text-primary">29% · 2 of 7</span>
                 </div>
-              </Card>
-            </div>
+                <div className="mt-3 h-2 w-full rounded-full bg-muted">
+                  <div className="h-2 rounded-full bg-primary" style={{ width: "29%" }} />
+                </div>
+              </div>
+            </Card>
 
-            {/* Onboarding Checklist */}
             <OnboardingChecklist />
 
-            {/* Integrations Panel */}
             <IntegrationsPanel />
 
-            {/* AI Chatbot - Dual Interface */}
-            <DualChatbotInterface 
-              employeeName={user.name}
-              employeeEmail={user.email}
-              managerEmail={user.manager_email}
-            />
-
-            {/* Email System Test Panel */}
-            <EmailTestPanel 
-              employeeName={user.name}
-              employeeEmail={user.email}
-              managerEmail={user.manager_email}
-            />
-
             {/* Documents Section */}
-            <Card className="p-6 border border-border">
+            <Card className="p-6">
               <h3 className="text-lg font-bold text-foreground mb-6 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-primary" />
                 Important Documents
               </h3>
 
-              <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+              <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-[10px]">
                 {[
                   { name: "Employee Handbook", date: "2024-01-15", type: "download" },
                   { name: "Code of Conduct", date: "2024-01-15", type: "download" },
@@ -140,7 +112,7 @@ export function EmployeeDashboard({ user, onLogout, onRoleChange }: EmployeeDash
                 ].map((doc) => (
                   <div
                     key={doc.name}
-                    className="flex flex-col p-4 bg-muted/50 rounded-lg hover:bg-muted hover:shadow-sm transition-all cursor-pointer border border-transparent hover:border-primary/20"
+                    className="flex flex-col p-4 bg-primary/5 rounded-xl transition-all cursor-pointer border border-transparent hover:border-primary/30 hover:bg-primary/10"
                     onClick={() => {
                       if (doc.type === "link" && doc.url) {
                         window.open(doc.url, "_blank")

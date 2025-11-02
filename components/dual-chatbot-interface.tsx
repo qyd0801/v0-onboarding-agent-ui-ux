@@ -23,7 +23,7 @@ export function DualChatbotInterface({
   return (
     <div className="space-y-6">
       {/* Mode Selector */}
-      <Card className="p-4 lg:p-5 border border-border">
+      <Card className="p-4 lg:p-5">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <h3 className="text-lg font-bold text-foreground mb-1">AI Assistant</h3>
@@ -36,7 +36,7 @@ export function DualChatbotInterface({
               className={`flex items-center gap-2 px-6 h-10 ${
                 mode === 'text' 
                   ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-md' 
-                  : 'border-border text-foreground hover:bg-muted'
+                  : 'text-foreground hover:bg-muted/60'
               }`}
             >
               <MessageCircle className="w-4 h-4" />
@@ -49,7 +49,7 @@ export function DualChatbotInterface({
               className={`flex items-center gap-2 px-6 h-10 ${
                 mode === 'avatar' 
                   ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-md' 
-                  : 'border-border text-foreground hover:bg-muted'
+                  : 'text-foreground hover:bg-muted/60'
               }`}
             >
               <Video className="w-4 h-4" />

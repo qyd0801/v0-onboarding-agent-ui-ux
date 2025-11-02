@@ -85,7 +85,7 @@ export function OnboardingChatbot() {
   }
 
   return (
-    <Card className="p-6 border border-border flex flex-col h-96">
+    <Card className="p-6 flex flex-col h-96">
       {/* Header */}
       <div className="flex items-center gap-2 mb-4 pb-4 border-b border-border">
         <MessageCircle className="w-5 h-5 text-primary" />

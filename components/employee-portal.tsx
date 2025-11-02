@@ -23,7 +23,7 @@ export function EmployeePortal({ onRoleChange }: EmployeePortalProps) {
   }
 
   if (isLoggedIn && currentUser) {
-    return <EmployeeDashboard user={currentUser} onLogout={handleLogout} onRoleChange={onRoleChange} />
+    return <EmployeeDashboard user={currentUser} onLogout={handleLogout} />
   }
 
   return <LoginForm onLogin={handleLogin} onAdminAccess={() => onRoleChange("admin")} />

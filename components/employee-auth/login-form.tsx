@@ -66,7 +66,7 @@ export function LoginForm({ onLogin, onAdminAccess }: LoginFormProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md lg:max-w-lg">
-        <Card className="p-8 lg:p-10 border border-border shadow-2xl">
+        <Card className="p-8 lg:p-10 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-primary rounded-xl mb-6 shadow-lg">
@@ -126,7 +126,7 @@ export function LoginForm({ onLogin, onAdminAccess }: LoginFormProps) {
           </form>
 
           {/* Admin Access */}
-          <div className="mt-8 pt-6 border-t border-border text-center">
+          <div className="mt-8 pt-6 text-center">
             <p className="text-sm text-muted-foreground mb-4">Are you an HR admin?</p>
             <Button
               type="button"
@@ -140,7 +140,7 @@ export function LoginForm({ onLogin, onAdminAccess }: LoginFormProps) {
         </Card>
 
         {/* Demo Credentials */}
-        <div className="mt-6 p-5 lg:p-6 bg-card border border-border rounded-lg shadow-lg">
+        <div className="mt-6 p-5 lg:p-6 bg-card rounded-lg shadow-lg">
           <p className="text-sm text-muted-foreground font-bold mb-3">📋 Demo Credentials:</p>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -149,7 +149,7 @@ export function LoginForm({ onLogin, onAdminAccess }: LoginFormProps) {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground font-semibold">Password:</span>
-              <code className="text-xs text-foreground bg-muted px-2 py-1 rounded">any password</code>
+              <code className="text-xs text-foreground bg-muted px-2 py-1 rounded">12345</code>
             </div>
           </div>
         </div>

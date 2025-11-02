@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Video, StopCircle, Loader2 } from "lucide-react"
+import { StopCircle, Loader2 } from "lucide-react"
 
 interface AnamAvatarChatbotProps {
   employeeName?: string
@@ -317,94 +317,49 @@ Use the knowledge folder for detailed company information.`,
 
   
 
-  const getStatusColor = () => {
-    switch (status) {
-      case 'connected':
-        return 'bg-green-500'
-      case 'speaking':
-        return 'bg-blue-500'
-      case 'stopped':
-        return 'bg-red-500'
-      case 'error':
-        return 'bg-red-500'
-      default:
-        return 'bg-yellow-500'
-    }
-  }
+  const showStopButton = status !== 'stopped' && status !== 'error'
 
   return (
-    <Card className="p-6 border border-border flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Video className="w-5 h-5 text-primary" />
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-foreground">AI Avatar Assistant</h3>
-            <p className="text-xs text-muted-foreground">Voice-enabled virtual assistant</p>
-          </div>
+    <Card className="relative overflow-hidden p-0 gap-0 aspect-[16/9]">
+      <video
+        id="anam-video"
+        ref={videoRef}
+        autoPlay
+        playsInline
+        className="h-full w-full object-cover"
+      />
+
+      {/* Microphone Toast */}
+      {showMicToast && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 transform bg-black/80 text-white px-5 py-3 rounded-full text-sm flex items-center gap-3 backdrop-blur-md shadow-lg">
+          <Loader2 className="w-5 h-5 animate-spin" />
+          <span>Allow microphone access when prompted</span>
         </div>
-        
-        <div className="flex items-center gap-3">
-          {/* Status Indicator */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-full">
-            <div className={`w-2 h-2 rounded-full ${getStatusColor()} animate-pulse`} />
-            <span className="text-xs text-muted-foreground font-medium">{statusText}</span>
-          </div>
-          
-          {/* Stop Button */}
-          {status !== 'stopped' && status !== 'error' && (
-            <Button
-              size="sm"
-              variant="destructive"
-              onClick={handleStop}
-              className="h-8"
-            >
-              <StopCircle className="w-4 h-4 mr-1" />
-              Stop
+      )}
+
+      {/* Error State */}
+      {status === 'error' && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/85 backdrop-blur-sm">
+          <div className="text-center text-white p-6 space-y-4">
+            <div className="text-red-300 text-lg font-medium">{statusText}</div>
+            <Button onClick={initAnamChatbot} size="sm" variant="secondary" className="mx-auto">
+              Retry Connection
             </Button>
-          )}
-        </div>
-      </div>
-
-      {/* Video Container (16:9) */}
-      <div className="relative w-full bg-black rounded-lg overflow-hidden" style={{ aspectRatio: '16/9' }}>
-        <video
-          id="anam-video"
-          ref={videoRef}
-          autoPlay
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        
-        {/* Microphone Toast */}
-        {showMicToast && (
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/90 text-white px-6 py-3 rounded-full text-sm flex items-center gap-3 backdrop-blur-sm shadow-xl">
-            <Loader2 className="w-5 h-5 animate-spin" />
-            <span>Allow microphone access when prompted</span>
           </div>
-        )}
-
-
-        {/* Error State */}
-        {status === 'error' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/90 backdrop-blur-sm">
-            <div className="text-center text-white p-8">
-              <div className="mb-4 text-red-400 text-lg font-semibold">{statusText}</div>
-              <Button onClick={initAnamChatbot} size="lg" variant="secondary">
-                Retry Connection
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Helper Text */}
-      {status === 'connected' && (
-        <div className="mt-4 px-4 py-3 bg-accent/10 border border-accent/20 rounded-lg text-center">
-          <p className="text-sm text-accent font-medium">💬 Ready to help! Just start speaking - I'm listening</p>
         </div>
+      )}
+
+      {/* Stop action */}
+      {showStopButton && (
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={handleStop}
+          aria-label="Stop voice avatar"
+          className="absolute bottom-4 right-4 rounded-full bg-[#13544E] text-white shadow-lg hover:bg-[#0f3f3a]"
+        >
+          <StopCircle className="size-5" />
+        </Button>
       )}
     </Card>
   )

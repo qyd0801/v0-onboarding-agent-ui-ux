@@ -174,7 +174,7 @@ Use the knowledge folder for detailed company information.`,
       functions: [
         {
           name: "send_email_to_it",
-          description: "Send email to IT support for license requests, software access, or technical issues",
+          description: "Send email to IT support when user requests licenses (e.g., Figma, Adobe), software access, hardware setup, technical support, or reports technical issues. Use this when employee needs IT assistance or access to tools.",
           parameters: {
             type: "object",
             properties: {
@@ -196,7 +196,7 @@ Use the knowledge folder for detailed company information.`,
         },
         {
           name: "send_email_to_hr",
-          description: "Send email to HR for policy questions, benefits inquiries, or general HR matters",
+          description: "Send email to HR when user asks about benefits, insurance, vacation policies, time off requests, company policies, payroll questions, or any human resources matters. Use this for policy questions and HR inquiries.",
           parameters: {
             type: "object",
             properties: {
@@ -218,7 +218,7 @@ Use the knowledge folder for detailed company information.`,
         },
         {
           name: "send_email_to_manager",
-          description: "Send email to the employee's manager",
+          description: "Send email to the employee's manager when user wants to communicate with their manager, request time off, discuss work-related matters, or needs manager approval or notification. Use this when employee explicitly mentions manager or wants to talk to their supervisor.",
           parameters: {
             type: "object",
             properties: {

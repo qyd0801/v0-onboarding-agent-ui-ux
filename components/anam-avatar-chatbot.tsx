@@ -109,7 +109,7 @@ export function AnamAvatarChatbot({
     const personaConfig = {
       type: "ephemeral",
       name: "RaspberryCoffeeOnboardingAssistant",
-      avatarId: process.env.NEXT_PUBLIC_ANAM_AVATAR_ID || "30fa96d0-26c4-4e55-94a0-517025942e18",
+      avatarId: process.env.NEXT_PUBLIC_ANAM_AVATAR_ID || "5282b930-c682-4eda-95a9-568ebd4f31a1",
       voiceId: process.env.NEXT_PUBLIC_ANAM_VOICE_ID || "6bfbe25a-979d-40f3-a92b-5394170af54b",
       llmId: process.env.NEXT_PUBLIC_ANAM_LLM_ID || "0934d97d-0c3a-4f33-91b0-5e136a0ef466",
       knowledgeFolderId: KNOWLEDGE_FOLDER_ID,
@@ -331,19 +331,24 @@ Use the knowledge folder for detailed company information.`,
   }
 
   return (
-    <Card className="p-6 border border-border flex flex-col h-96">
+    <Card className="p-6 border border-border flex flex-col h-[500px] lg:h-[600px] xl:h-[700px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
-        <div className="flex items-center gap-2">
-          <Video className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-bold text-foreground">AI Avatar Assistant</h3>
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <Video className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-foreground">AI Avatar Assistant</h3>
+            <p className="text-xs text-muted-foreground">Voice-enabled virtual assistant</p>
+          </div>
         </div>
         
         <div className="flex items-center gap-3">
           {/* Status Indicator */}
-          <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-full">
             <div className={`w-2 h-2 rounded-full ${getStatusColor()} animate-pulse`} />
-            <span className="text-xs text-muted-foreground">{statusText}</span>
+            <span className="text-xs text-muted-foreground font-medium">{statusText}</span>
           </div>
           
           {/* Stop Button */}
@@ -352,9 +357,9 @@ Use the knowledge folder for detailed company information.`,
               size="sm"
               variant="destructive"
               onClick={handleStop}
-              className="h-8"
+              className="h-9"
             >
-              <StopCircle className="w-4 h-4 mr-1" />
+              <StopCircle className="w-4 h-4 mr-2" />
               Stop
             </Button>
           )}
@@ -362,7 +367,7 @@ Use the knowledge folder for detailed company information.`,
       </div>
 
       {/* Video Container */}
-      <div className="flex-1 bg-black rounded-lg overflow-hidden relative">
+      <div className="flex-1 bg-black rounded-xl overflow-hidden relative shadow-lg">
         <video
           id="anam-video"
           ref={videoRef}
@@ -373,29 +378,20 @@ Use the knowledge folder for detailed company information.`,
         
         {/* Microphone Toast */}
         {showMicToast && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 backdrop-blur-sm">
-            <Loader2 className="w-4 h-4 animate-spin" />
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/90 text-white px-6 py-3 rounded-full text-sm flex items-center gap-3 backdrop-blur-sm shadow-xl">
+            <Loader2 className="w-5 h-5 animate-spin" />
             <span>Allow microphone access when prompted</span>
           </div>
         )}
 
-        {/* Loading State */}
-        {(status === 'initializing' || status === 'connecting') && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <div className="text-center text-white">
-              <Loader2 className="w-12 h-12 animate-spin mx-auto mb-3" />
-              <p>{statusText}</p>
-            </div>
-          </div>
-        )}
 
         {/* Error State */}
         {status === 'error' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/80">
-            <div className="text-center text-white p-6">
-              <p className="mb-4">{statusText}</p>
-              <Button onClick={initAnamChatbot} variant="secondary">
-                Retry
+          <div className="absolute inset-0 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+            <div className="text-center text-white p-8">
+              <div className="mb-4 text-red-400 text-lg font-semibold">{statusText}</div>
+              <Button onClick={initAnamChatbot} size="lg" variant="secondary">
+                Retry Connection
               </Button>
             </div>
           </div>
@@ -404,8 +400,8 @@ Use the knowledge folder for detailed company information.`,
 
       {/* Helper Text */}
       {status === 'connected' && (
-        <div className="mt-3 text-xs text-muted-foreground text-center">
-          💬 Just start speaking - I'm listening!
+        <div className="mt-4 px-4 py-3 bg-accent/10 border border-accent/20 rounded-lg text-center">
+          <p className="text-sm text-accent font-medium">💬 Ready to help! Just start speaking - I'm listening</p>
         </div>
       )}
     </Card>

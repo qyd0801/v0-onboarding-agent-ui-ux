@@ -93,21 +93,21 @@ export function IntegrationsPanel() {
   }
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-bold text-foreground">Connected Services</h3>
+    <div className="space-y-6">
+      <h3 className="text-xl font-bold text-foreground">Connected Services</h3>
 
-      <div className="grid gap-4">
+      <div className="grid lg:grid-cols-2 gap-4 xl:gap-6">
         {integrations.map((integration) => (
-          <Card key={integration.name} className="p-6 border border-border">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-muted rounded-lg">{integration.icon}</div>
+          <Card key={integration.name} className="p-6 lg:p-7 border border-border hover:shadow-md transition-shadow">
+            <div className="flex items-start justify-between mb-5">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-muted rounded-xl shadow-sm">{integration.icon}</div>
                 <div>
-                  <h4 className="text-base font-semibold text-foreground">{integration.name}</h4>
+                  <h4 className="text-lg font-bold text-foreground">{integration.name}</h4>
                   <p className="text-xs text-muted-foreground mt-1">Onboarding Integration</p>
                 </div>
               </div>
-              <Badge className={`${getStatusColor(integration.status)} flex items-center gap-1`}>
+              <Badge className={`${getStatusColor(integration.status)} flex items-center gap-1 px-3 py-1.5`}>
                 {getStatusIcon(integration.status)}
                 {integration.status === "connected" && "Connected"}
                 {integration.status === "pending" && "Pending"}
@@ -116,10 +116,10 @@ export function IntegrationsPanel() {
             </div>
 
             {/* Integration Details */}
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {integration.details.map((detail, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="w-1 h-1 rounded-full bg-accent" />
+                <div key={idx} className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
                   <span>{detail}</span>
                 </div>
               ))}
@@ -162,22 +162,29 @@ export function IntegrationsPanel() {
       </div>
 
       {/* Integration Status Summary */}
-      <Card className="p-6 border border-border bg-accent/5">
-        <h4 className="font-semibold text-foreground mb-3">Onboarding Status</h4>
-        <div className="space-y-2 text-sm">
-          <p className="text-muted-foreground">
-            <span className="font-semibold text-accent">
-              {integrations.filter((i) => i.status === "connected").length} of {integrations.length}
-            </span>{" "}
-            integrations completed
-          </p>
-          <p className="text-muted-foreground">
+      <Card className="p-6 lg:p-7 border border-border bg-gradient-to-br from-accent/5 to-accent/10">
+        <h4 className="text-lg font-bold text-foreground mb-4">Onboarding Status</h4>
+        <div className="space-y-3">
+          <div className="flex items-center gap-3 p-4 bg-background/50 rounded-lg">
+            <div className="text-3xl font-bold text-accent">
+              {integrations.filter((i) => i.status === "connected").length}/{integrations.length}
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-foreground">Integrations Completed</p>
+              <p className="text-sm text-muted-foreground">
+                {integrations.every((i) => i.status === "connected")
+                  ? "All systems ready!"
+                  : "Almost there!"}
+              </p>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed">
             {integrations.every((i) => i.status === "connected")
               ? "Your access to all team tools has been configured and activated."
               : "Complete the pending integrations to get full access to team tools."}
           </p>
-          <p className="text-muted-foreground mt-3 text-xs">
-            If you experience any issues accessing these services, please contact IT support at it-support@company.com.
+          <p className="text-xs text-muted-foreground pt-2 border-t border-border/50">
+            💡 Need help? Contact IT support at it-support@company.com
           </p>
         </div>
       </Card>

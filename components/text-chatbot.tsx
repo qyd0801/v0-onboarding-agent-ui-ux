@@ -203,29 +203,34 @@ export function TextChatbot({
   }
 
   return (
-    <Card className="p-6 border border-border flex flex-col h-96">
+    <Card className="p-6 border border-border flex flex-col h-[500px] lg:h-[600px] xl:h-[700px]">
       {/* Header */}
-      <div className="flex items-center gap-2 mb-4 pb-4 border-b border-border">
-        <MessageCircle className="w-5 h-5 text-primary" />
-        <h3 className="text-lg font-bold text-foreground">Text Chat Assistant</h3>
+      <div className="flex items-center gap-3 mb-4 pb-4 border-b border-border">
+        <div className="p-2 bg-primary/10 rounded-lg">
+          <MessageCircle className="w-5 h-5 text-primary" />
+        </div>
+        <div className="flex-1">
+          <h3 className="text-lg font-bold text-foreground">Text Chat Assistant</h3>
+          <p className="text-xs text-muted-foreground">Ask questions or request support</p>
+        </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+      <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
-              className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+              className={`max-w-[70%] lg:max-w-[65%] xl:max-w-[60%] px-4 py-3 rounded-lg shadow-sm ${
                 message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
               }`}
             >
-              <p className="text-sm">{message.content}</p>
+              <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
             </div>
           </div>
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-muted text-foreground px-4 py-2 rounded-lg flex items-center gap-2">
+            <div className="bg-muted text-foreground px-4 py-3 rounded-lg flex items-center gap-2 shadow-sm">
               <Loader2 className="w-4 h-4 animate-spin" />
               <p className="text-sm">Thinking...</p>
             </div>
@@ -235,21 +240,21 @@ export function TextChatbot({
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSendMessage} className="flex gap-2">
+      <form onSubmit={handleSendMessage} className="flex gap-3 pt-3 border-t border-border">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask me anything..."
           disabled={isLoading}
-          className="bg-input border-border flex-1"
+          className="bg-input border-border flex-1 h-12"
         />
         <Button
           type="submit"
           disabled={isLoading || !input.trim()}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground"
-          size="icon"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-6"
         >
-          <Send className="w-4 h-4" />
+          <Send className="w-4 h-4 mr-2" />
+          <span className="hidden sm:inline">Send</span>
         </Button>
       </form>
     </Card>

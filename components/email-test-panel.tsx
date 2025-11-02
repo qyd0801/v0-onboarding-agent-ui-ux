@@ -83,76 +83,90 @@ export function EmailTestPanel({
   }
 
   return (
-    <Card className="p-6 border border-border">
-      <div className="flex items-center gap-2 mb-4">
-        <Mail className="w-5 h-5 text-primary" />
-        <h3 className="text-lg font-bold text-foreground">Email System Test</h3>
+    <Card className="p-6 lg:p-7 border border-border">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-primary/10 rounded-lg">
+          <Mail className="w-5 h-5 text-primary" />
+        </div>
+        <div>
+          <h3 className="text-xl font-bold text-foreground">Email System Test</h3>
+          <p className="text-sm text-muted-foreground">Test automated email functionality</p>
+        </div>
       </div>
 
-      <p className="text-sm text-muted-foreground mb-4">
+      <p className="text-sm text-muted-foreground mb-6 p-4 bg-muted/50 rounded-lg">
         Test the automated email system. All emails will be sent to your Gmail.
       </p>
 
-      <div className="space-y-3">
+      <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-4">
         <Button
           onClick={() => sendTestEmail('it')}
           disabled={loading !== null}
-          className="w-full justify-start"
+          className="h-auto py-4 flex-col items-start text-left"
           variant="outline"
         >
-          {loading === 'it' ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          ) : (
-            <Mail className="w-4 h-4 mr-2" />
-          )}
-          Send IT Support Email (License Request)
+          <div className="flex items-center gap-2 mb-1">
+            {loading === 'it' ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <Mail className="w-5 h-5" />
+            )}
+            <span className="font-bold">IT Support</span>
+          </div>
+          <span className="text-xs text-muted-foreground">License Request</span>
         </Button>
 
         <Button
           onClick={() => sendTestEmail('hr')}
           disabled={loading !== null}
-          className="w-full justify-start"
+          className="h-auto py-4 flex-col items-start text-left"
           variant="outline"
         >
-          {loading === 'hr' ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          ) : (
-            <Mail className="w-4 h-4 mr-2" />
-          )}
-          Send HR Email (Benefits Question)
+          <div className="flex items-center gap-2 mb-1">
+            {loading === 'hr' ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <Mail className="w-5 h-5" />
+            )}
+            <span className="font-bold">HR Team</span>
+          </div>
+          <span className="text-xs text-muted-foreground">Benefits Question</span>
         </Button>
 
         <Button
           onClick={() => sendTestEmail('manager')}
           disabled={loading !== null}
-          className="w-full justify-start"
+          className="h-auto py-4 flex-col items-start text-left"
           variant="outline"
         >
-          {loading === 'manager' ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          ) : (
-            <Mail className="w-4 h-4 mr-2" />
-          )}
-          Send Manager Email (Project Update)
+          <div className="flex items-center gap-2 mb-1">
+            {loading === 'manager' ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <Mail className="w-5 h-5" />
+            )}
+            <span className="font-bold">Manager</span>
+          </div>
+          <span className="text-xs text-muted-foreground">Project Update</span>
         </Button>
       </div>
 
       {lastResult && (
-        <div className={`mt-4 p-3 rounded-lg flex items-start gap-2 ${
-          lastResult.success ? 'bg-green-500/10 text-green-600' : 'bg-red-500/10 text-red-600'
+        <div className={`mt-6 p-4 rounded-lg flex items-start gap-3 ${
+          lastResult.success ? 'bg-green-500/10 text-green-600 border border-green-500/20' : 'bg-red-500/10 text-red-600 border border-red-500/20'
         }`}>
           {lastResult.success ? (
-            <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+            <CheckCircle className="w-6 h-6 mt-0.5 flex-shrink-0" />
           ) : (
-            <XCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+            <XCircle className="w-6 h-6 mt-0.5 flex-shrink-0" />
           )}
-          <p className="text-sm">{lastResult.message}</p>
+          <p className="text-sm font-medium">{lastResult.message}</p>
         </div>
       )}
 
-      <div className="mt-4 p-3 bg-muted rounded-lg">
-        <p className="text-xs text-muted-foreground">
-          💡 <strong>Tip:</strong> Check your Gmail at kaikang0609@gmail.com to see the emails!
+      <div className="mt-6 p-4 bg-gradient-to-r from-accent/5 to-accent/10 border border-accent/20 rounded-lg">
+        <p className="text-sm text-foreground">
+          💡 <strong>Tip:</strong> Check your Gmail at <code className="bg-background px-2 py-1 rounded text-xs">kaikang0609@gmail.com</code> to see the emails!
         </p>
       </div>
     </Card>

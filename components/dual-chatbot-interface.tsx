@@ -21,35 +21,41 @@ export function DualChatbotInterface({
   const [mode, setMode] = useState<'text' | 'avatar'>('text')
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Mode Selector */}
-      <Card className="p-3 border border-border">
-        <div className="flex items-center justify-center gap-3">
-          <Button
-            variant={mode === 'text' ? 'default' : 'outline'}
-            onClick={() => setMode('text')}
-            className={`flex items-center gap-2 ${
-              mode === 'text' 
-                ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
-                : 'border-border text-foreground hover:bg-muted'
-            }`}
-          >
-            <MessageCircle className="w-4 h-4" />
-            Chatbot
-          </Button>
-          
-          <Button
-            variant={mode === 'avatar' ? 'default' : 'outline'}
-            onClick={() => setMode('avatar')}
-            className={`flex items-center gap-2 ${
-              mode === 'avatar' 
-                ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
-                : 'border-border text-foreground hover:bg-muted'
-            }`}
-          >
-            <Video className="w-4 h-4" />
-            Avatar
-          </Button>
+      <Card className="p-4 lg:p-5 border border-border">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 className="text-lg font-bold text-foreground mb-1">AI Assistant</h3>
+            <p className="text-sm text-muted-foreground">Choose your preferred interaction mode</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              variant={mode === 'text' ? 'default' : 'outline'}
+              onClick={() => setMode('text')}
+              className={`flex items-center gap-2 px-6 h-10 ${
+                mode === 'text' 
+                  ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-md' 
+                  : 'border-border text-foreground hover:bg-muted'
+              }`}
+            >
+              <MessageCircle className="w-4 h-4" />
+              Text Chat
+            </Button>
+            
+            <Button
+              variant={mode === 'avatar' ? 'default' : 'outline'}
+              onClick={() => setMode('avatar')}
+              className={`flex items-center gap-2 px-6 h-10 ${
+                mode === 'avatar' 
+                  ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-md' 
+                  : 'border-border text-foreground hover:bg-muted'
+              }`}
+            >
+              <Video className="w-4 h-4" />
+              Voice Avatar
+            </Button>
+          </div>
         </div>
       </Card>
 

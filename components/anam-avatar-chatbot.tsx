@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Video, StopCircle, Loader2, PauseCircle, PlayCircle, Zap } from "lucide-react"
+import { Video, StopCircle, Loader2 } from "lucide-react"
 
 interface AnamAvatarChatbotProps {
   employeeName?: string
@@ -17,11 +17,10 @@ export function AnamAvatarChatbot({
   managerEmail = ""
 }: AnamAvatarChatbotProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [status, setStatus] = useState<'initializing' | 'connecting' | 'connected' | 'speaking' | 'paused' | 'stopped' | 'error'>('initializing')
+  const [status, setStatus] = useState<'initializing' | 'connecting' | 'connected' | 'speaking' | 'stopped' | 'error'>('initializing')
   const [statusText, setStatusText] = useState('Initializing...')
   const [anamClient, setAnamClient] = useState<any>(null)
   const [showMicToast, setShowMicToast] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
     initAnamChatbot()
@@ -78,10 +77,8 @@ export function AnamAvatarChatbot({
       })
 
       client.addListener('personaStoppedSpeaking', () => {
-        if (!isPaused) {
-          setStatus('connected')
-          setStatusText('Ready to chat!')
-        }
+        setStatus('connected')
+        setStatusText('Ready to chat!')
       })
 
       // Listen for errors
@@ -318,59 +315,7 @@ Use the knowledge folder for detailed company information.`,
     }
   }
 
-  const handleInterrupt = async () => {
-    if (!anamClient) return
-    try {
-      if (typeof anamClient.interrupt === 'function') {
-        await anamClient.interrupt()
-      } else if (typeof anamClient.sendCommand === 'function') {
-        await anamClient.sendCommand({ type: 'interrupt' })
-      } else if (typeof anamClient.command === 'function') {
-        await anamClient.command('interrupt')
-      } else {
-        console.warn('Interrupt command not supported on client')
-      }
-      setStatus('connected')
-      setStatusText('Interrupted. Listening...')
-    } catch (error) {
-      console.error('Error interrupting:', error)
-    }
-  }
-
-  const handleTogglePause = async () => {
-    if (!anamClient) return
-    try {
-      if (!isPaused) {
-        if (typeof anamClient.pause === 'function') {
-          await anamClient.pause()
-        } else if (typeof anamClient.sendCommand === 'function') {
-          await anamClient.sendCommand({ type: 'pause' })
-        } else if (typeof anamClient.command === 'function') {
-          await anamClient.command('pause')
-        } else {
-          console.warn('Pause command not supported on client')
-        }
-        setIsPaused(true)
-        setStatus('paused')
-        setStatusText('Paused')
-      } else {
-        if (typeof anamClient.resume === 'function') {
-          await anamClient.resume()
-        } else if (typeof anamClient.sendCommand === 'function') {
-          await anamClient.sendCommand({ type: 'resume' })
-        } else if (typeof anamClient.command === 'function') {
-          await anamClient.command('resume')
-        } else {
-          console.warn('Resume command not supported on client')
-        }
-        setIsPaused(false)
-        setStatus('connected')
-        setStatusText('Ready to chat!')
-      }
-    } catch (error) {
-      console.error('Error toggling pause:', error)
-    }
-  }
+  
 
   const getStatusColor = () => {
     switch (status) {
@@ -378,8 +323,6 @@ Use the knowledge folder for detailed company information.`,
         return 'bg-green-500'
       case 'speaking':
         return 'bg-blue-500'
-      case 'paused':
-        return 'bg-yellow-500'
       case 'stopped':
         return 'bg-red-500'
       case 'error':
@@ -410,58 +353,18 @@ Use the knowledge folder for detailed company information.`,
             <span className="text-xs text-muted-foreground font-medium">{statusText}</span>
           </div>
           
-          {/* Controls */}
-          <div className="flex items-center gap-2">
-            {/* Interrupt Button */}
-            {(status === 'speaking' || status === 'connected') && !isPaused && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleInterrupt}
-                className="h-8 border-border"
-                title="Interrupt assistant and start talking"
-              >
-                <Zap className="w-4 h-4 mr-1" />
-                Interrupt
-              </Button>
-            )}
-
-            {/* Pause/Resume Button */}
-            {status !== 'stopped' && status !== 'error' && (
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={handleTogglePause}
-                className="h-8"
-                title={isPaused ? 'Resume call' : 'Pause call'}
-              >
-                {isPaused ? (
-                  <>
-                    <PlayCircle className="w-4 h-4 mr-1" />
-                    Resume
-                  </>
-                ) : (
-                  <>
-                    <PauseCircle className="w-4 h-4 mr-1" />
-                    Pause
-                  </>
-                )}
-              </Button>
-            )}
-
-            {/* Stop Button */}
-            {status !== 'stopped' && status !== 'error' && (
-              <Button
-                size="sm"
-                variant="destructive"
-                onClick={handleStop}
-                className="h-8"
-              >
-                <StopCircle className="w-4 h-4 mr-1" />
-                Stop
-              </Button>
-            )}
-          </div>
+          {/* Stop Button */}
+          {status !== 'stopped' && status !== 'error' && (
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={handleStop}
+              className="h-8"
+            >
+              <StopCircle className="w-4 h-4 mr-1" />
+              Stop
+            </Button>
+          )}
         </div>
       </div>
 

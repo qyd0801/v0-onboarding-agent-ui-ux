@@ -20,8 +20,8 @@ interface Employee {
   addedAt: string
 }
 
-const PROJECTS = ["Frontend", "Backend", "DevOps", "Design", "Product"]
-const ROLES = ["Junior Developer", "Senior Developer", "Team Lead", "Designer", "Product Manager"]
+const PROJECTS = ["Project Nova", "The Aurora Design System", "Customer 360"]
+const ROLES = ["Design System Intern", "Frontend Engineer Intern", "UX Designer Intern"]
 
 export function HROnboardingDashboard() {
   const [employees, setEmployees] = useState<Employee[]>([])

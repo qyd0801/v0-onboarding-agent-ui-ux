@@ -93,18 +93,26 @@ export function IntegrationsPanel() {
   }
 
   return (
-    <div className="space-y-6">
-      <h3 className="text-xl font-bold text-foreground">Connected Services</h3>
+    <Card className="p-6 lg:p-7 space-y-6">
+      <div className="flex flex-col gap-2">
+        <h3 className="text-xl font-bold text-foreground">Connected Services</h3>
+        <p className="text-sm text-muted-foreground">Keep your onboarding tools in sync.</p>
+      </div>
 
-      <div className="grid lg:grid-cols-2 gap-4 xl:gap-6">
+      <div className="grid gap-4 lg:grid-cols-2">
         {integrations.map((integration) => (
-          <Card key={integration.name} className="p-6 lg:p-7 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-5">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-muted rounded-xl shadow-sm">{integration.icon}</div>
+          <div
+            key={integration.name}
+            className="flex h-full flex-col justify-between rounded-[24px] bg-primary/10 p-6 transition-shadow hover:shadow-md"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="rounded-2xl bg-white/80 p-3 shadow-sm">
+                  {integration.icon}
+                </div>
                 <div>
-                  <h4 className="text-lg font-bold text-foreground">{integration.name}</h4>
-                  <p className="text-xs text-muted-foreground mt-1">Onboarding Integration</p>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-primary/70">Onboarding Integration</p>
+                  <h4 className="text-lg font-bold text-primary">{integration.name}</h4>
                 </div>
               </div>
               <Badge
@@ -118,23 +126,21 @@ export function IntegrationsPanel() {
               </Badge>
             </div>
 
-            {/* Integration Details */}
-            <div className="space-y-2.5">
+            <div className="mt-5 space-y-2.5">
               {integration.details.map((detail, idx) => (
-                <div key={idx} className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                <div key={idx} className="flex items-center gap-3 text-sm text-primary/80">
+                  <div className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
                   <span>{detail}</span>
                 </div>
               ))}
             </div>
 
-            {/* Actions */}
-            {integration.status === "connected" && (
-              <div className="mt-4 pt-4 relative before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-foreground/10">
+            <div className="mt-6">
+              {integration.status === "connected" ? (
                 <Button
                   size="sm"
                   variant="outline"
-                  className="w-full bg-transparent text-primary border-primary/30 hover:bg-primary/10"
+                  className="w-full bg-white/70 text-primary border-primary/30 hover:bg-white"
                   onClick={() => {
                     if (integration.name === "Slack") {
                       window.open("https://raspberrycoffee.slack.com", "_blank")
@@ -145,24 +151,20 @@ export function IntegrationsPanel() {
                 >
                   View in {integration.name}
                 </Button>
-              </div>
-            )}
-
-            {integration.status === "pending" && (
-              <div className="mt-4 pt-4 flex gap-2 relative before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-foreground/10">
+              ) : (
                 <Button
                   size="sm"
                   variant="outline"
-                  className="text-primary hover:bg-primary/10 flex-1 bg-transparent border-primary/30"
+                  className="w-full border-primary/30 bg-white/70 text-primary hover:bg-white"
                   onClick={integration.name === "Slack" ? handleJoinSlack : undefined}
                 >
                   {integration.name === "Slack" ? "Join Slack Workspace" : "Complete Setup"}
                 </Button>
-              </div>
-            )}
-          </Card>
+              )}
+            </div>
+          </div>
         ))}
       </div>
-    </div>
+    </Card>
   )
 }
